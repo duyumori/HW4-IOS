@@ -8,27 +8,25 @@ class BookTableViewCell: UITableViewCell {
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        backgroundColor = .white
-        separatorInset = UIEdgeInsets(top: 0, left: 98, bottom: 0, right: 20)
 
-        coverView.frame = CGRect(x: 20, y: 10, width: 64, height: 76)
+        coverView.frame = CGRect(x: 16, y: 8, width: 42, height: 60)
         coverView.contentMode = .scaleAspectFill
         coverView.clipsToBounds = true
-        coverView.layer.cornerRadius = 10
         contentView.addSubview(coverView)
 
-        titleLabel.frame = CGRect(x: 98, y: 16, width: 250, height: 22)
-        titleLabel.font = .systemFont(ofSize: 17, weight: .semibold)
+        titleLabel.frame = CGRect(x: 70, y: 14, width: 230, height: 22)
+        titleLabel.font = .systemFont(ofSize: 16, weight: .medium)
         contentView.addSubview(titleLabel)
 
-        infoLabel.frame = CGRect(x: 98, y: 40, width: 250, height: 18)
+        infoLabel.frame = CGRect(x: 70, y: 38, width: 230, height: 20)
         infoLabel.font = .systemFont(ofSize: 13)
-        infoLabel.textColor = .systemGray
+        infoLabel.textColor = .gray
         contentView.addSubview(infoLabel)
 
-        ratingLabel.frame = CGRect(x: 98, y: 60, width: 250, height: 18)
-        ratingLabel.font = .systemFont(ofSize: 14, weight: .medium)
-        ratingLabel.textColor = .systemOrange
+        ratingLabel.frame = CGRect(x: 300, y: 26, width: 60, height: 24)
+        ratingLabel.font = .boldSystemFont(ofSize: 15)
+        ratingLabel.textColor = .orange
+        ratingLabel.textAlignment = .right
         contentView.addSubview(ratingLabel)
     }
 
@@ -39,8 +37,7 @@ class BookTableViewCell: UITableViewCell {
     func configure(with book: Book) {
         coverView.image = UIImage(named: book.id)
         titleLabel.text = book.title
-        infoLabel.text = "\(book.year) · \(book.genre)"
-        ratingLabel.text = "★ \(book.rating)/5"
-        accessibilityIdentifier = "row-\(book.id)"
+        infoLabel.text = "\(book.author) - \(book.genre)"
+        ratingLabel.text = "\(book.rating)"
     }
 }

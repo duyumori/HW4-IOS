@@ -40,11 +40,6 @@
 			path = "Book Explorer";
 			sourceTree = "<group>";
 		};
-		B00000000000000000000002 /* BookExplorerUITests */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = BookExplorerUITests;
-			sourceTree = "<group>";
-		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -69,7 +64,6 @@
 			isa = PBXGroup;
 			children = (
 				0929D26C3097BCA6003273EF /* Book Explorer */,
-				B00000000000000000000002 /* BookExplorerUITests */,
 				0929D26B3097BCA6003273EF /* Products */,
 			);
 			sourceTree = "<group>";
@@ -120,9 +114,6 @@
 			);
 			dependencies = (
 				B00000000000000000000007 /* PBXTargetDependency */,
-			);
-			fileSystemSynchronizedGroups = (
-				B00000000000000000000002 /* BookExplorerUITests */,
 			);
 			name = BookExplorerUITests;
 			productName = BookExplorerUITests;

@@ -7,50 +7,43 @@ class BooksViewController: UIViewController, UITableViewDataSource, UITableViewD
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = "Book Explorer"
+        title = "Book List"
         view.backgroundColor = .white
         setupTableView()
-        setupHeader()
+        setupPopular()
     }
 
     func setupTableView() {
-        tableView.frame = view.bounds
+        tableView.frame = CGRect(x: 0, y: 0, width: view.bounds.width, height: view.bounds.height - 260)
         tableView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        tableView.backgroundColor = .white
         tableView.dataSource = self
         tableView.delegate = self
-        tableView.accessibilityIdentifier = "all-books"
         tableView.register(BookTableViewCell.self, forCellReuseIdentifier: "BookRow")
         view.addSubview(tableView)
     }
 
-    func setupHeader() {
+    func setupPopular() {
         let width = view.bounds.width
-        let headerView = UIView(frame: CGRect(x: 0, y: 0, width: width, height: 300))
+        let bottomView = UIView(frame: CGRect(x: 0, y: view.bounds.height - 260, width: width, height: 260))
+        bottomView.autoresizingMask = [.flexibleWidth, .flexibleTopMargin]
+        bottomView.backgroundColor = .systemGray6
+        view.addSubview(bottomView)
 
-        let titleLabel = UILabel(frame: CGRect(x: 20, y: 20, width: width - 40, height: 34))
-        titleLabel.text = "Discover Books"
-        titleLabel.font = .boldSystemFont(ofSize: 28)
-        headerView.addSubview(titleLabel)
-
-        let popularLabel = UILabel(frame: CGRect(x: 20, y: 72, width: width - 40, height: 24))
-        popularLabel.text = "Popular Books"
-        popularLabel.font = .systemFont(ofSize: 19, weight: .semibold)
-        headerView.addSubview(popularLabel)
+        let popularLabel = UILabel(frame: CGRect(x: 16, y: 8, width: 200, height: 26))
+        popularLabel.text = "Popular now"
+        popularLabel.font = .boldSystemFont(ofSize: 18)
+        bottomView.addSubview(popularLabel)
 
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
-        collectionView = UICollectionView(frame: CGRect(x: 0, y: 116, width: width, height: 154), collectionViewLayout: layout)
+        collectionView = UICollectionView(frame: CGRect(x: 0, y: 40, width: width, height: 180), collectionViewLayout: layout)
         collectionView.autoresizingMask = [.flexibleWidth]
-        collectionView.backgroundColor = .white
+        collectionView.backgroundColor = .clear
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.dataSource = self
         collectionView.delegate = self
-        collectionView.accessibilityIdentifier = "popular-books"
         collectionView.register(BookCollectionViewCell.self, forCellWithReuseIdentifier: "BookCard")
-        headerView.addSubview(collectionView)
-
-        tableView.tableHeaderView = headerView
+        bottomView.addSubview(collectionView)
     }
 
     func reloadBooks() {
@@ -59,10 +52,9 @@ class BooksViewController: UIViewController, UITableViewDataSource, UITableViewD
     }
 
     func showBook(_ book: Book) {
-        let message = "\(book.author)\n\(book.year) · \(book.genre)\n★ \(book.rating)/5\n\n\(book.summary)"
-        let alert = UIAlertController(title: book.title, message: message, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "Close", style: .cancel))
-        present(alert, animated: true)
+        let detailVC = BookDetailViewController()
+        detailVC.book = book
+        navigationController?.pushViewController(detailVC, animated: true)
     }
 
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -80,22 +72,22 @@ class BooksViewController: UIViewController, UITableViewDataSource, UITableViewD
     }
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 96
+        return 76
     }
 
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return "All Books"
+        return "My books"
     }
 
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 40
+        return 30
     }
 
     func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
         if books.isEmpty {
-            return "No books left"
+            return "No books"
         }
-        return "\(books.count) books"
+        return "Books: \(books.count)"
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -111,7 +103,7 @@ class BooksViewController: UIViewController, UITableViewDataSource, UITableViewD
     }
 
     func tableView(_ tableView: UITableView, titleForDeleteConfirmationButtonForRowAt indexPath: IndexPath) -> String? {
-        return "Delete book"
+        return "Delete"
     }
 
     func numberOfSections(in collectionView: UICollectionView) -> Int {
@@ -134,15 +126,15 @@ class BooksViewController: UIViewController, UITableViewDataSource, UITableViewD
     }
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: 112, height: 154)
+        return CGSize(width: 95, height: 175)
     }
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        return UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
+        return UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
     }
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        return 12
+        return 10
     }
 
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
@@ -153,7 +145,7 @@ class BooksViewController: UIViewController, UITableViewDataSource, UITableViewD
     }
 
     func collectionView(_ collectionView: UICollectionView, didHighlightItemAt indexPath: IndexPath) {
-        collectionView.cellForItem(at: indexPath)?.alpha = 0.6
+        collectionView.cellForItem(at: indexPath)?.alpha = 0.5
     }
 
     func collectionView(_ collectionView: UICollectionView, didUnhighlightItemAt indexPath: IndexPath) {
